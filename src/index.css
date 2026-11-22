@@ -1,0 +1,182 @@
+@import '@fontsource-variable/oswald';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Oswald Variable', 'Arial Narrow', sans-serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  /* small text floor: 13px, not 12px */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
+
+  --color-ink: #0c0d0f;
+  --color-graphite: #15171a;
+  --color-panel: rgb(20 21 24 / 0.72);
+  --color-panel-2: rgb(30 31 35 / 0.78);
+  --color-line: rgb(255 240 220 / 0.09);
+  --color-line-strong: rgb(255 240 220 / 0.18);
+  --color-text: #f2ede4;
+  --color-muted: #a29d94;
+  --color-dim: #75716a;
+  --color-amber: #e3a548;
+  --color-amber-soft: rgb(227 165 72 / 0.14);
+  --color-sage: #93b49c;
+  --color-sage-soft: rgb(147 180 156 / 0.14);
+  --color-warn: #d9a441;
+  --color-rose: #d27766;
+  --color-rose-soft: rgb(210 119 102 / 0.14);
+
+  --animate-drift: drift 90s ease-in-out infinite alternate;
+  --animate-fade-up: fade-up 380ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes drift {
+    from { transform: scale(1.06) translate3d(-1.2%, 0, 0); }
+    to { transform: scale(1.06) translate3d(1.2%, -0.8%, 0); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    color-scheme: dark;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: rgb(227 165 72 / 0.35);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  input[type='number']::-webkit-inner-spin-button {
+    opacity: 0.4;
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+  .panel {
+    background: var(--color-panel);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(6px);
+  }
+  .hairline {
+    border-color: var(--color-line);
+  }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* range slider, styled as a thin instrument track */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      var(--color-amber) 0%,
+      var(--color-amber) var(--fill, 0%),
+      var(--color-line-strong) var(--fill, 0%)
+    );
+  }
+  .range::-moz-range-track {
+    height: 2px;
+    background: var(--color-line-strong);
+  }
+  .range::-moz-range-progress {
+    height: 2px;
+    background: var(--color-amber);
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 22px;
+    margin-top: -10px;
+    background: var(--color-text);
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 0 0 4px rgb(227 165 72 / 0.18);
+  }
+  .range::-moz-range-thumb {
+    width: 14px;
+    height: 22px;
+    background: var(--color-text);
+    border: 0;
+    border-radius: 2px;
+  }
+  .range:focus-visible {
+    outline: none;
+  }
+  .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px var(--color-amber);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Print: the Mission Review becomes a clean, ink-light briefing */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-sheet {
+    color: #111 !important;
+  }
+  .print-sheet * {
+    color: #111 !important;
+    background: transparent !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
